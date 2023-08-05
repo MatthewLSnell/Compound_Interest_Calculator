@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 
 # Set the layout to 'wide'
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="Compound Interest Calculator", page_icon="🧮", layout="wide")
 
 
 def compound_interest(
@@ -108,8 +108,10 @@ with st.sidebar:
         "Contribution Amount ($)", min_value=0.0, value=50.0, step=0.1
     )
     investment_period = st.number_input(
-        "Investment Period (years)", min_value=1, value=10, step=1
+        "Investment Period (years)", min_value=1, max_value=50, value=10, step=1
     )
+    if investment_period > 50:
+        st.warning('The investment period is too high. Please enter a value less than or equal to 50.')
     interest_rate = st.number_input("Interest Rate (%)", min_value=0.0, value=5.0, step=0.1)
     compound_times = st.number_input(
         "Compound Times per Year", min_value=1, value=12, step=1
@@ -117,9 +119,11 @@ with st.sidebar:
     contrib_periods_per_year = st.number_input(
         "Contribution Periods per Year", min_value=1, value=12, step=1
     )
+    
+    calculate = st.button("Calculate")
 
 # Calculation and result display when the "Calculate" button is pressed
-if st.button("Calculate"):
+if calculate:
     result = compound_interest(
         initial_investment,
         contribution_amount,
@@ -148,6 +152,18 @@ if st.button("Calculate"):
     # Cumulative calculations for contributions and interest
     df_breakdown["Total Contributions ($)"] = df_breakdown["Contributions ($)"].cumsum()
     df_breakdown["Total Interest ($)"] = df_breakdown["Interest ($)"].cumsum()
+    
+    # Visual representation of the investment breakdown
+    bar_fig = px.bar(
+        df_breakdown,
+        x="Year",
+        y=["Total Contributions ($)", "Total Interest ($)"],
+        title="Yearly Investment Breakdown",
+        labels={"value": "Amount ($)", "variable": "Type"},
+    )
+
+    # st.plotly_chart(fig,use_container_width=True,height=1500)
+    st.plotly_chart(bar_fig, use_container_width=True, height=1500)
 
     # Format for Streamlit Display
     styled_df = df_breakdown.style.format(
@@ -165,15 +181,3 @@ if st.button("Calculate"):
     )
 
     st.table(styled_df)
-
-    # Visual representation of the investment breakdown
-    bar_fig = px.bar(
-        df_breakdown,
-        x="Year",
-        y=["Total Contributions ($)", "Total Interest ($)"],
-        title="Yearly Investment Breakdown",
-        labels={"value": "Amount ($)", "variable": "Type"},
-    )
-
-    # st.plotly_chart(fig,use_container_width=True,height=1500)
-    st.plotly_chart(bar_fig, use_container_width=True, height=1500)
