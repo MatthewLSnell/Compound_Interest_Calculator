@@ -82,18 +82,12 @@ def annual_breakdown(
         data.append(
             {
                 "Year": year,
-                # "Start Principal ($)": round(start_principal, 2),
                 "Start Balance ($)": round(
                     start_balance, 2
                 ),  # This is the same as "End Principal ($)
-                # "Start Principal ($)": round(principal - contribution * contribution_periods_per_year - total_interest_earned, 2),
                 "Interest ($)": round(total_interest_earned, 2),
-                # "Start Balance ($)": round(start_balance, 2), # This is the same as "End Principal ($)
-                # "Start Balance ($)": round(principal - contribution * contribution_periods_per_year, 2),
                 "Contributions ($)": contribution * contribution_periods_per_year,
                 "End Balance ($)": round(principal, 2),
-                # "End Principal ($)": round(principal - total_interest_earned, 2),
-                # "End Balance ($)": round(principal, 2)
             }
         )
 
@@ -103,23 +97,26 @@ def annual_breakdown(
 # Streamlit UI
 st.title("Compound Interest Calculator")
 
-# Streamlit UI widgets for user input
-initial_investment = st.number_input(
-    "Initial Investment ($)", min_value=0.0, value=1000.0, step=0.1
-)
-contribution_amount = st.number_input(
-    "Contribution Amount ($)", min_value=0.0, value=50.0, step=0.1
-)
-investment_period = st.number_input(
-    "Investment Period (years)", min_value=1, value=10, step=1
-)
-interest_rate = st.number_input("Interest Rate (%)", min_value=0.0, value=5.0, step=0.1)
-compound_times = st.number_input(
-    "Compound Times per Year", min_value=1, value=12, step=1
-)
-contrib_periods_per_year = st.number_input(
-    "Contribution Periods per Year", min_value=1, value=12, step=1
-)
+# Create sidebar for input widgets
+with st.sidebar:
+
+    # Streamlit UI widgets for user input
+    initial_investment = st.number_input(
+        "Initial Investment ($)", min_value=0.0, value=1000.0, step=0.1
+    )
+    contribution_amount = st.number_input(
+        "Contribution Amount ($)", min_value=0.0, value=50.0, step=0.1
+    )
+    investment_period = st.number_input(
+        "Investment Period (years)", min_value=1, value=10, step=1
+    )
+    interest_rate = st.number_input("Interest Rate (%)", min_value=0.0, value=5.0, step=0.1)
+    compound_times = st.number_input(
+        "Compound Times per Year", min_value=1, value=12, step=1
+    )
+    contrib_periods_per_year = st.number_input(
+        "Contribution Periods per Year", min_value=1, value=12, step=1
+    )
 
 # Calculation and result display when the "Calculate" button is pressed
 if st.button("Calculate"):
@@ -159,7 +156,6 @@ if st.button("Calculate"):
             "Start Principal ($)": "${:,.2f}",
             "Start Balance ($)": "${:,.2f}",
             "Interest ($)": "${:,.2f}",
-            # "Start Balance ($)": "${:,.2f}",
             "Contributions ($)": "${:,.2f}",
             "Total Interest ($)": "${:,.2f}",
             "End Balance ($)": "${:,.2f}",
@@ -169,13 +165,6 @@ if st.button("Calculate"):
     )
 
     st.table(styled_df)
-
-    # # Visual representation of the investment breakdown
-    # fig = px.line(df_breakdown, x='Year',
-    #               y=['End Balance ($)', 'Total Contributions ($)', 'Total Interest ($)'],
-    #               title='Yearly Investment Breakdown',
-    #               labels={'value': 'Amount ($)', 'variable': 'Type'},
-    #               )
 
     # Visual representation of the investment breakdown
     bar_fig = px.bar(
