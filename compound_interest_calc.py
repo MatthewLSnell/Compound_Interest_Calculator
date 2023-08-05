@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 
 # Set the layout to 'wide'
-st.set_page_config(page_title="Compound Interest Calculator", page_icon="🧮", layout="wide")
+st.set_page_config(page_title="Compound Interest Calculator", page_icon="🧮", layout="wide", initial_sidebar_state='expanded')
 
 
 def compound_interest(
@@ -97,6 +97,9 @@ def annual_breakdown(
 # Streamlit UI
 st.title("Compound Interest Calculator")
 
+# st.sidebar.subheader('Input Parameters')
+
+
 # Create sidebar for input widgets
 with st.sidebar:
 
@@ -121,6 +124,11 @@ with st.sidebar:
     )
     
     calculate = st.button("Calculate")
+    
+    st.sidebar.markdown('''
+    ---
+    Created by [Matthew Snell](https://www.matthewlawrencesnell.com/).
+    ''')
 
 # Calculation and result display when the "Calculate" button is pressed
 if calculate:
@@ -132,11 +140,35 @@ if calculate:
         compound_times,
         contrib_periods_per_year,
     )
-    st.write(
-        f"The future value of the investment after {investment_period} years with monthly contributions is: ${result[0]:,.2f}"
-    )
-    st.write(f"Total contributions made over the period: ${result[1]:,.2f}")
-    st.write(f"Total interest collected over the period: ${result[2]:,.2f}")
+    # st.write(
+    #     f"The future value of the investment after {investment_period} years with monthly contributions is: ${result[0]:,.2f}"
+    # )
+    # st.write(f"Total contributions made over the period: ${result[1]:,.2f}")
+    # st.write(f"Total interest collected over the period: ${result[2]:,.2f}")
+    
+    # Row A
+    # Display results in Streamlit metrics
+    # st.markdown('### Metrics')
+    # col1, col2, col3 = st.columns(3)
+    # col1.metric("Future Value ($)", f"${result[0]:,.2f}")
+    # col2.metric("Total Contributions ($)", f"${result[1]:,.2f}")
+    # col3.metric("Total Interest ($)", f"${result[2]:,.2f}")
+    
+    # Display metrics 
+    col1, col2, col3 = st.columns(3, gap='large')
+    with col1:
+        st.info('Future Value', icon="💵")
+        st.metric("", f"${result[0]:,.2f}")
+        
+    with col2:
+        st.info('Total Contributions', icon="📈")
+        st.metric("", f"${result[1]:,.2f}")
+        
+    with col3:
+        st.info('Total Interest', icon="💰")
+        st.metric("", f"${result[2]:,.2f}")
+        
+    st.markdown("""---""")
 
     # Display the annual breakdown
     breakdown_data = annual_breakdown(
