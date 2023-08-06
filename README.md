@@ -2,6 +2,8 @@
 
 This is a Streamlit application that provides a visual representation of how compound interest works over time, considering both the principal amount and regular contributions.
 
+![Dashboard]([images/example.jpg](https://github.com/MatthewLSnell/Compound_Interest_Calculator/blob/main/Images/Cover.png)
+
 ## Features
 
 - **Calculate the future value** of an investment with regular contributions.
