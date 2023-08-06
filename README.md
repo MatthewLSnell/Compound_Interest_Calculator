@@ -44,8 +44,8 @@ There are two main functions in the code:
 2. Clone this repository or copy the code to a Python file.
 3. Run the Streamlit application using:
 
-\```bash
+```bash
 streamlit run compound_interest_calc.py
-\```
+```
 
 4. Navigate to the provided URL to view and use the application.
