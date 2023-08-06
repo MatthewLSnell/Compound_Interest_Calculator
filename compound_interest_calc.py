@@ -6,6 +6,17 @@ import plotly.express as px
 # Set the layout to 'wide'
 st.set_page_config(page_title="Compound Interest Calculator", page_icon="🧮", layout="wide", initial_sidebar_state='expanded')
 
+with open('style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    
+hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden; }
+        footer {visibility: hidden;}
+        </style>
+        """
+st.markdown(hide_menu_style, unsafe_allow_html=True)
+
 
 def compound_interest(
     principal: float,
@@ -157,16 +168,19 @@ if calculate:
     # Display metrics 
     col1, col2, col3 = st.columns(3, gap='large')
     with col1:
-        st.info('Future Value', icon="💵")
-        st.metric("", f"${result[0]:,.2f}")
+        st.markdown('<div style="text-align: center">Future Value 💵</div>', unsafe_allow_html=True)
+        # st.info('Future Value', icon="💵")
+        st.metric("Future Value 💵", f"${result[0]:,.2f}", label_visibility='hidden')
         
     with col2:
-        st.info('Total Contributions', icon="📈")
-        st.metric("", f"${result[1]:,.2f}")
+        st.markdown('<div style="text-align: center">Total Contributions 📈</div>', unsafe_allow_html=True)
+        # st.info('Total Contributions', icon="📈")
+        st.metric("Total Contributions 📈", f"${result[1]:,.2f}", label_visibility='hidden')
         
     with col3:
-        st.info('Total Interest', icon="💰")
-        st.metric("", f"${result[2]:,.2f}")
+        st.markdown('<div style="text-align: center">Total Interest 💰</div>', unsafe_allow_html=True)
+        # st.info('Total Interest', icon="💰")
+        st.metric("Total Interest 💰", f"${result[2]:,.2f}", label_visibility='hidden')
         
     st.markdown("""---""")
 
@@ -195,7 +209,7 @@ if calculate:
     )
 
     # st.plotly_chart(fig,use_container_width=True,height=1500)
-    st.plotly_chart(bar_fig, use_container_width=True, height=1500)
+    st.plotly_chart(bar_fig, use_container_width=True, height=1750)
 
     # Format for Streamlit Display
     styled_df = df_breakdown.style.format(
